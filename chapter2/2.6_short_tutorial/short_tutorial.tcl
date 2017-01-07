@@ -118,10 +118,17 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
 # Set 'constrs_1' fileset object
 set obj [get_filesets constrs_1]
 
-# Empty (no sources present)
+# Add/Import constrs file and set constrs file properties
+set file "[file normalize "$origin_dir/src/Basys3_Master.xdc"]"
+set file_added [add_files -norecurse -fileset $obj $file]
+set file "$origin_dir/src/Basys3_Master.xdc"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
+set_property "file_type" "XDC" $file_obj
 
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
+set_property "target_constrs_file" "[file normalize "$origin_dir/src/Basys3_Master.xdc"]" $obj
 
 # Create 'sim_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sim_1] ""]} {
@@ -130,11 +137,20 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
-# Empty (no sources present)
+set files [list \
+ "[file normalize "$origin_dir/src/eq2_testbench.v"]"\
+]
+add_files -norecurse -fileset $obj $files
+
+# Set 'sim_1' fileset file properties for remote files
+# None
+
+# Set 'sim_1' fileset file properties for local files
+# None
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property "top" "eq2" $obj
+set_property "top" "eq2_testbench" $obj
 set_property "transport_int_delay" "0" $obj
 set_property "transport_path_delay" "0" $obj
 set_property "xelab.nosort" "1" $obj
