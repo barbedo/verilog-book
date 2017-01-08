@@ -3,4 +3,4 @@
 
 ### Page 24
 
-A very short tutorial showing how implement a two-bit comparator.
+A very short tutorial showing how to implement a two-bit comparator.
