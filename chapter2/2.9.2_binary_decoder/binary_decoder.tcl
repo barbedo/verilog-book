@@ -96,6 +96,7 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 set obj [get_filesets sources_1]
 set files [list \
  "[file normalize "$origin_dir/src/design/decoder_2to4.v"]"\
+ "[file normalize "$origin_dir/src/design/decoder_3to8.v"]"\
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -107,7 +108,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property "top" "decoder_2to4" $obj
+set_property "top" "decoder_3to8" $obj
 
 # Create 'constrs_1' fileset (if not found)
 if {[string equal [get_filesets -quiet constrs_1] ""]} {
@@ -136,6 +137,7 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
 set files [list \
+ "[file normalize "$origin_dir/src/testbench/decoder_3to8_tb.v"]"\
  "[file normalize "$origin_dir/src/testbench/decoder_2to4_tb.v"]"\
 ]
 add_files -norecurse -fileset $obj $files
@@ -148,7 +150,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property "top" "decoder_2to4_tb" $obj
+set_property "top" "decoder_3to8_tb" $obj
 set_property "transport_int_delay" "0" $obj
 set_property "transport_path_delay" "0" $obj
 set_property "xelab.nosort" "1" $obj
