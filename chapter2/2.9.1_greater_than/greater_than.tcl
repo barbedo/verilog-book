@@ -95,7 +95,10 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
+ "[file normalize "$origin_dir/src/design/eq1.v"]"\
  "[file normalize "$origin_dir/src/design/greater_than_2b.v"]"\
+ "[file normalize "$origin_dir/src/design/eq2.v"]"\
+ "[file normalize "$origin_dir/src/design/greater_than_4b.v"]"\
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -107,7 +110,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property "top" "greater_than_2b" $obj
+set_property "top" "greater_than_4b" $obj
 
 # Create 'constrs_1' fileset (if not found)
 if {[string equal [get_filesets -quiet constrs_1] ""]} {
@@ -127,6 +130,7 @@ set_property "file_type" "XDC" $file_obj
 
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
+set_property "target_constrs_file" "[file normalize "$origin_dir/src/constraints/Basys3_Master.xdc"]" $obj
 
 # Create 'sim_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sim_1] ""]} {
@@ -136,6 +140,7 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
 set files [list \
+ "[file normalize "$origin_dir/src/testbench/greater_than_4b_tb.v"]"\
  "[file normalize "$origin_dir/src/testbench/greater_than_2b_tb.v"]"\
 ]
 add_files -norecurse -fileset $obj $files
@@ -148,7 +153,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property "top" "greater_than_2b_tb" $obj
+set_property "top" "greater_than_4b_tb" $obj
 set_property "transport_int_delay" "0" $obj
 set_property "transport_path_delay" "0" $obj
 set_property "xelab.nosort" "1" $obj
