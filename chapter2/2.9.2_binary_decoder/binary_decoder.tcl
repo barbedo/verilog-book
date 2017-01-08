@@ -97,6 +97,7 @@ set obj [get_filesets sources_1]
 set files [list \
  "[file normalize "$origin_dir/src/design/decoder_2to4.v"]"\
  "[file normalize "$origin_dir/src/design/decoder_3to8.v"]"\
+ "[file normalize "$origin_dir/src/design/decoder_4to16.v"]"\
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -137,6 +138,7 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
 set files [list \
+ "[file normalize "$origin_dir/src/testbench/decoder_4to16_tb.v"]"\
  "[file normalize "$origin_dir/src/testbench/decoder_3to8_tb.v"]"\
  "[file normalize "$origin_dir/src/testbench/decoder_2to4_tb.v"]"\
 ]
@@ -150,7 +152,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property "top" "decoder_3to8_tb" $obj
+set_property "top" "decoder_4to16_tb" $obj
 set_property "transport_int_delay" "0" $obj
 set_property "transport_path_delay" "0" $obj
 set_property "xelab.nosort" "1" $obj
@@ -164,6 +166,7 @@ if {[string equal [get_runs -quiet synth_1] ""]} {
   set_property flow "Vivado Synthesis 2016" [get_runs synth_1]
 }
 set obj [get_runs synth_1]
+set_property "needs_refresh" "1" $obj
 set_property "part" "xc7a35tcpg236-1" $obj
 
 # set the current synth run
@@ -177,6 +180,7 @@ if {[string equal [get_runs -quiet impl_1] ""]} {
   set_property flow "Vivado Implementation 2016" [get_runs impl_1]
 }
 set obj [get_runs impl_1]
+set_property "needs_refresh" "1" $obj
 set_property "part" "xc7a35tcpg236-1" $obj
 set_property "steps.write_bitstream.args.readback_file" "0" $obj
 set_property "steps.write_bitstream.args.verbose" "0" $obj
