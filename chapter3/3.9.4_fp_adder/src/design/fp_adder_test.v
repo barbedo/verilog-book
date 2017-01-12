@@ -40,7 +40,7 @@ module fp_adder_test
         (.hex(frac_out[3:0]), .dp(1'b1), .sseg(led1));
     // 4 MSBs of fraction
     hex_to_sseg sseg_unit_2
-        (.hex(frac_out[7:0]), .dp(1'b0), .sseg(led2));
+        (.hex(frac_out[7:4]), .dp(1'b0), .sseg(led2));
     // sign
     assign led3 = (sign_out) ? 8'b11111110 : 8'b11111111;
 
