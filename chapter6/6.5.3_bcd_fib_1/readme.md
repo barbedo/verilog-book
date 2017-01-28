@@ -21,4 +21,4 @@ displayed instead (overflow).
 
 #### Master control ASMD chart
 
-![ASMD chart](bcd_fib_1_asmd.pgn)
+![ASMD chart](bcd_fib_1_asmd.png)
