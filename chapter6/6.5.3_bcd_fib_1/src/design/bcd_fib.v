@@ -46,7 +46,7 @@ module bcd_fib
     
     // output with overflow detection
     always @*
-        if (|bin_fib_out[19:13])
+        if (|bin_fib_out[19:13] || |bin_fib_in[6:5])
             begin
                 out_bcd3 = 4'b1001;
                 out_bcd2 = 4'b1001;
