@@ -140,11 +140,20 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
-# Empty (no sources present)
+set files [list \
+ "[file normalize "$origin_dir/src/testbench/auto_low_freq_counter_tb.v"]"\
+]
+add_files -norecurse -fileset $obj $files
+
+# Set 'sim_1' fileset file properties for remote files
+# None
+
+# Set 'sim_1' fileset file properties for local files
+# None
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property "top" "auto_low_freq_counter_test" $obj
+set_property "top" "auto_low_freq_counter_tb" $obj
 set_property "xelab.nosort" "1" $obj
 set_property "xelab.unifast" "" $obj
 
