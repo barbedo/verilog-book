@@ -1,9 +1,9 @@
-#
-# Vivado (TM) v2017.1 (64-bit)
+#*****************************************************************************************
+# Vivado (TM) v2017.3.1 (64-bit)
 #
 # auto_low_freq_counter.tcl: Tcl script for re-creating project 'auto_low_freq_counter'
 #
-# IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+# IP Build 2034413 on Fri Oct 20 15:56:25 MDT 2017
 #
 # This file contains the Vivado Tcl commands for re-creating the project to the state*
 # when this script was generated. In order to re-create the project, please source this
@@ -22,6 +22,14 @@ if { [info exists ::origin_dir_loc] } {
   set origin_dir $::origin_dir_loc
 }
 
+# Set the project name
+set project_name "auto_low_freq_counter"
+
+# Use project name variable, if specified in the tcl shell
+if { [info exists ::user_project_name] } {
+  set project_name $::user_project_name
+}
+
 variable script_file
 set script_file "auto_low_freq_counter.tcl"
 
@@ -36,6 +44,7 @@ proc help {} {
   puts "Syntax:"
   puts "$script_file"
   puts "$script_file -tclargs \[--origin_dir <path>\]"
+  puts "$script_file -tclargs \[--project_name <name>\]"
   puts "$script_file -tclargs \[--help\]\n"
   puts "Usage:"
   puts "Name                   Description"
@@ -44,6 +53,9 @@ proc help {} {
   puts "                       origin_dir path value is \".\", otherwise, the value"
   puts "                       that was set with the \"-paths_relative_to\" switch"
   puts "                       when this script was generated.\n"
+  puts "\[--project_name <name>\] Create project with the specified name. Default"
+  puts "                       name is the name of the project from where this"
+  puts "                       script was generated.\n"
   puts "\[--help\]               Print help information for this script"
   puts "-------------------------------------------------------------------------\n"
   exit 0
@@ -53,8 +65,9 @@ if { $::argc > 0 } {
   for {set i 0} {$i < [llength $::argc]} {incr i} {
     set option [string trim [lindex $::argv $i]]
     switch -regexp -- $option {
-      "--origin_dir" { incr i; set origin_dir [lindex $::argv $i] }
-      "--help"       { help }
+      "--origin_dir"   { incr i; set origin_dir [lindex $::argv $i] }
+      "--project_name" { incr i; set project_name [lindex $::argv $i] }
+      "--help"         { help }
       default {
         if { [regexp {^-} $option] } {
           puts "ERROR: Unknown option '$option' specified, please type '$script_file -tclargs --help' for usage info.\n"
@@ -66,10 +79,10 @@ if { $::argc > 0 } {
 }
 
 # Set the directory path for the original project from where this script was exported
-set orig_proj_dir "[file normalize "$origin_dir/work"]"
+set orig_proj_dir "[file normalize "$origin_dir/vivado_project"]"
 
 # Create project
-create_project auto_low_freq_counter $origin_dir/work -part xc7a35tcpg236-1 -quiet -force
+create_project ${project_name} $origin_dir/vivado_project -part xc7a35tcpg236-1 -quiet -force
 
 # Set the directory path for the new project
 set proj_dir [get_property directory [current_project]]
@@ -78,12 +91,13 @@ set proj_dir [get_property directory [current_project]]
 # None
 
 # Set project properties
-set obj [get_projects auto_low_freq_counter]
-set_property "default_lib" "xil_defaultlib" $obj
-set_property "ip_cache_permissions" "read write" $obj
-set_property "part" "xc7a35tcpg236-1" $obj
-set_property "sim.ip.auto_export_scripts" "1" $obj
-set_property "simulator_language" "Mixed" $obj
+set obj [current_project]
+set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
+set_property -name "ip_cache_permissions" -value "read write" -objects $obj
+set_property -name "ip_output_repo" -value "$proj_dir/${project_name}.cache/ip" -objects $obj
+set_property -name "part" -value "xc7a35tcpg236-1" -objects $obj
+set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
+set_property -name "simulator_language" -value "Mixed" -objects $obj
 
 # Create 'sources_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -112,7 +126,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property "top" "auto_low_freq_counter_test" $obj
+set_property -name "top" -value "auto_low_freq_counter_test" -objects $obj
 
 # Create 'constrs_1' fileset (if not found)
 if {[string equal [get_filesets -quiet constrs_1] ""]} {
@@ -128,7 +142,7 @@ set file_added [add_files -norecurse -fileset $obj $file]
 set file "$origin_dir/src/constraints/Basys3_Master.xdc"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
-set_property "file_type" "XDC" $file_obj
+set_property -name "file_type" -value "XDC" -objects $file_obj
 
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
@@ -153,9 +167,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property "top" "auto_low_freq_counter_tb" $obj
-set_property "xelab.nosort" "1" $obj
-set_property "xelab.unifast" "" $obj
+set_property -name "top" -value "auto_low_freq_counter_tb" -objects $obj
 
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs -quiet synth_1] ""]} {
@@ -165,7 +177,9 @@ if {[string equal [get_runs -quiet synth_1] ""]} {
   set_property flow "Vivado Synthesis 2016" [get_runs synth_1]
 }
 set obj [get_runs synth_1]
-set_property "part" "xc7a35tcpg236-1" $obj
+set_property -name "part" -value "xc7a35tcpg236-1" -objects $obj
+set_property -name "report_strategy" -value "Vivado Synthesis Default Reports" -objects $obj
+set_property -name "strategy" -value "Vivado Synthesis Defaults" -objects $obj
 
 # set the current synth run
 current_run -synthesis [get_runs synth_1]
@@ -178,9 +192,11 @@ if {[string equal [get_runs -quiet impl_1] ""]} {
   set_property flow "Vivado Implementation 2016" [get_runs impl_1]
 }
 set obj [get_runs impl_1]
-set_property "part" "xc7a35tcpg236-1" $obj
-set_property "steps.write_bitstream.args.readback_file" "0" $obj
-set_property "steps.write_bitstream.args.verbose" "0" $obj
+set_property -name "part" -value "xc7a35tcpg236-1" -objects $obj
+set_property -name "report_strategy" -value "Vivado Implementation Default Reports" -objects $obj
+set_property -name "strategy" -value "Vivado Implementation Defaults" -objects $obj
+set_property -name "steps.write_bitstream.args.readback_file" -value "0" -objects $obj
+set_property -name "steps.write_bitstream.args.verbose" -value "0" -objects $obj
 
 # set the current impl run
 current_run -implementation [get_runs impl_1]
@@ -188,4 +204,4 @@ current_run -implementation [get_runs impl_1]
 # Change current directory to project folder
 cd [file dirname [info script]]
 
-puts "INFO: Project created:auto_low_freq_counter"
+puts "INFO: Project created:$project_name"
