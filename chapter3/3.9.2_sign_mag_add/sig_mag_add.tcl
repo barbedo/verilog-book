@@ -1,9 +1,9 @@
 #*****************************************************************************************
-# Vivado (TM) v2017.3.1 (64-bit)
+# Vivado (TM) v2018.1 (64-bit)
 #
 # sig_mag_add.tcl: Tcl script for re-creating project 'sig_mag_add'
 #
-# IP Build 2034413 on Fri Oct 20 15:56:25 MDT 2017
+# IP Build 2185939 on Wed Apr  4 20:55:05 MDT 2018
 #
 # This file contains the Vivado Tcl commands for re-creating the project to the state*
 # when this script was generated. In order to re-create the project, please source this
@@ -23,11 +23,11 @@ if { [info exists ::origin_dir_loc] } {
 }
 
 # Set the project name
-set project_name "sig_mag_add"
+set _xil_proj_name_ "sig_mag_add"
 
 # Use project name variable, if specified in the tcl shell
 if { [info exists ::user_project_name] } {
-  set project_name $::user_project_name
+  set _xil_proj_name_ $::user_project_name
 }
 
 variable script_file
@@ -62,11 +62,11 @@ proc help {} {
 }
 
 if { $::argc > 0 } {
-  for {set i 0} {$i < [llength $::argc]} {incr i} {
+  for {set i 0} {$i < $::argc} {incr i} {
     set option [string trim [lindex $::argv $i]]
     switch -regexp -- $option {
       "--origin_dir"   { incr i; set origin_dir [lindex $::argv $i] }
-      "--project_name" { incr i; set project_name [lindex $::argv $i] }
+      "--project_name" { incr i; set _xil_proj_name_ [lindex $::argv $i] }
       "--help"         { help }
       default {
         if { [regexp {^-} $option] } {
@@ -82,7 +82,7 @@ if { $::argc > 0 } {
 set orig_proj_dir "[file normalize "$origin_dir/vivado_project"]"
 
 # Create project
-create_project ${project_name} $origin_dir/vivado_project -part xc7a35tcpg236-1 -quiet -force
+create_project ${_xil_proj_name_} $origin_dir/vivado_project -part xc7a35tcpg236-1 -quiet -force
 
 # Set the directory path for the new project
 set proj_dir [get_property directory [current_project]]
@@ -94,7 +94,7 @@ set proj_dir [get_property directory [current_project]]
 set obj [current_project]
 set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
-set_property -name "ip_output_repo" -value "$proj_dir/${project_name}.cache/ip" -objects $obj
+set_property -name "ip_output_repo" -value "$proj_dir/${_xil_proj_name_}.cache/ip" -objects $obj
 set_property -name "part" -value "xc7a35tcpg236-1" -objects $obj
 set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
 set_property -name "simulator_language" -value "Mixed" -objects $obj
@@ -108,10 +108,10 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
- "[file normalize "$origin_dir/src/design/disp_mux.v"]"\
- "[file normalize "$origin_dir/src/design/hex_to_sseg.v"]"\
- "[file normalize "$origin_dir/src/design/sign_mag_add.v"]"\
- "[file normalize "$origin_dir/src/design/sm_add_test.v"]"\
+ [file normalize "${origin_dir}/src/design/disp_mux.v"] \
+ [file normalize "${origin_dir}/src/design/hex_to_sseg.v"] \
+ [file normalize "${origin_dir}/src/design/sign_mag_add.v"] \
+ [file normalize "${origin_dir}/src/design/sm_add_test.v"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -135,7 +135,7 @@ set obj [get_filesets constrs_1]
 
 # Add/Import constrs file and set constrs file properties
 set file "[file normalize "$origin_dir/src/constraints/Basys3_Master.xdc"]"
-set file_added [add_files -norecurse -fileset $obj $file]
+set file_added [add_files -norecurse -fileset $obj [list $file]]
 set file "$origin_dir/src/constraints/Basys3_Master.xdc"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
@@ -159,14 +159,13 @@ set_property -name "top" -value "sm_add_test" -objects $obj
 
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs -quiet synth_1] ""]} {
-  create_run -name synth_1 -part xc7a35tcpg236-1 -flow {Vivado Synthesis 2016} -strategy "Vivado Synthesis Defaults" -constrset constrs_1
+    create_run -name synth_1 -part xc7a35tcpg236-1 -flow {Vivado Synthesis 2016} -strategy "Vivado Synthesis Defaults" -report_strategy {No Reports} -constrset constrs_1
 } else {
   set_property strategy "Vivado Synthesis Defaults" [get_runs synth_1]
   set_property flow "Vivado Synthesis 2016" [get_runs synth_1]
 }
 set obj [get_runs synth_1]
 set_property -name "part" -value "xc7a35tcpg236-1" -objects $obj
-set_property -name "report_strategy" -value "Vivado Synthesis Default Reports" -objects $obj
 set_property -name "strategy" -value "Vivado Synthesis Defaults" -objects $obj
 
 # set the current synth run
@@ -174,14 +173,13 @@ current_run -synthesis [get_runs synth_1]
 
 # Create 'impl_1' run (if not found)
 if {[string equal [get_runs -quiet impl_1] ""]} {
-  create_run -name impl_1 -part xc7a35tcpg236-1 -flow {Vivado Implementation 2016} -strategy "Vivado Implementation Defaults" -constrset constrs_1 -parent_run synth_1
+    create_run -name impl_1 -part xc7a35tcpg236-1 -flow {Vivado Implementation 2016} -strategy "Vivado Implementation Defaults" -report_strategy {No Reports} -constrset constrs_1 -parent_run synth_1
 } else {
   set_property strategy "Vivado Implementation Defaults" [get_runs impl_1]
   set_property flow "Vivado Implementation 2016" [get_runs impl_1]
 }
 set obj [get_runs impl_1]
 set_property -name "part" -value "xc7a35tcpg236-1" -objects $obj
-set_property -name "report_strategy" -value "Vivado Implementation Default Reports" -objects $obj
 set_property -name "strategy" -value "Vivado Implementation Defaults" -objects $obj
 set_property -name "steps.write_bitstream.args.readback_file" -value "0" -objects $obj
 set_property -name "steps.write_bitstream.args.verbose" -value "0" -objects $obj
@@ -192,4 +190,4 @@ current_run -implementation [get_runs impl_1]
 # Change current directory to project folder
 cd [file dirname [info script]]
 
-puts "INFO: Project created:$project_name"
+puts "INFO: Project created:${_xil_proj_name_}"
