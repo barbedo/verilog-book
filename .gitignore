@@ -1,2 +1,4 @@
 **/vivado_project/
 *~
+*.jou
+*.log
